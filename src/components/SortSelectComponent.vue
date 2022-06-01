@@ -67,17 +67,11 @@ export default class SortSelectComponent extends Vue{
   get currentTitle(){
     let title
     this.$props.itemsStates.forEach((i,idx) => {
-      //console.log("iii", i)
       if(i){
         title = this.$props.itemsList[idx]
-        //console.log("title", title)
       }
     })
     return title
-  }
-
-  changeState(){
-    this.state = !this.state
   }
 
   change(e, index){
@@ -100,10 +94,7 @@ export default class SortSelectComponent extends Vue{
         let x = element.x
         let y = element.y
 
-        if(x >= left && x <= right && y <= bottom && y >= top){
-          //console.log("CHECK_CLICK_IN")
-        }
-        else{
+        if(!(x >= left && x <= right && y <= bottom && y >= top)){
           this.state = false
         }
       }
@@ -131,137 +122,159 @@ export default class SortSelectComponent extends Vue{
 
     @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
-  .sort-select-component{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    .main-button{
+
+    .sort-select-component{
+      position: relative;
       display: flex;
-      height: 36px;
-      min-width: 122px;
-      justify-content: space-between;
-      align-items: center;
-      background: #FFFEFB;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-      font-family: 'Source Sans Pro';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 15px;
-      color: #B4B4B4;
-      padding: 10px 16px;
-      box-sizing: border-box;
-      cursor: pointer;
-      -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-      -khtml-user-select: none; /* Konqueror HTML */
-      -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-      user-select: none;
-      transform: translateY(-5px);
-      .chevron-container{
-        height: 12px;
-        padding-left: 4px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        #chevron-icon{
-          transition: all 0.15s ease-in;
-        }
-      }
-    }
-    .sub-block{
-      position: absolute;
-      display: flex;
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #EAEAEA;
-      align-items: center;
       flex-direction: column;
-      background: #FFFEFB;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transform: translateY(36px);
-      z-index: 5;
-      border-radius: 4px;
-      font-family: 'Source Sans Pro';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 15px;
-      color: #B4B4B4;
-      transition: opacity .1s ease-in;
-      .item{
-        padding: 0 8px;
-        box-sizing: border-box;
+
+      .main-button{
         display: flex;
-        height: 24px;
-        width: 100%;
-        justify-content: start;
+        height: 36px;
+        min-width: 122px;
+        justify-content: space-between;
         align-items: center;
-        position: relative;
+        background: #FFFEFB;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        font-family: 'Source Sans Pro';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: #B4B4B4;
+        padding: 10px 16px;
+        box-sizing: border-box;
         cursor: pointer;
-        .checkbox-original{
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        transform: translateY(-5px);
+
+        .chevron-container{
           height: 12px;
-          width: 12px;
-          position: absolute;
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          cursor: pointer;
-        }
-        .checkbox-custom{
+          padding-left: 4px;
+          box-sizing: border-box;
           display: flex;
-          height: 12px;
-          width: 12px;
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          justify-content: center;
+          flex-direction: column;
+          justify-content: flex-end;
+
+          #chevron-icon{
+            transition: all 0.15s ease-in;
+          }
+
+        }
+
+      }
+
+      .sub-block{
+        position: absolute;
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #EAEAEA;
+        align-items: center;
+        flex-direction: column;
+        background: #FFFEFB;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transform: translateY(36px);
+        z-index: 5;
+        border-radius: 4px;
+        font-family: 'Source Sans Pro';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: #B4B4B4;
+        transition: opacity .1s ease-in;
+
+        .item{
+          padding: 0 8px;
+          box-sizing: border-box;
+          display: flex;
+          height: 24px;
+          width: 100%;
+          justify-content: start;
           align-items: center;
-          transition: all .25s ease;
-          .check-icon{
+          position: relative;
+          cursor: pointer;
+
+          .checkbox-original{
+            height: 12px;
+            width: 12px;
             position: absolute;
-            left: 0px;
-            top: 5px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+          }
+
+          .checkbox-custom{
+            display: flex;
+            height: 12px;
+            width: 12px;
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            justify-content: center;
+            align-items: center;
             transition: all .25s ease;
+
+            .check-icon{
+              position: absolute;
+              left: 0;
+              top: 5px;
+              transition: all .25s ease;
+            }
+
           }
-        }
-        .checkbox-original + .checkbox-custom{
-          background-color: lightgrey;
-          .check-icon{
-            position: absolute;
-            left: 5px;
-            top: 5px;
-            opacity: 0;
+
+          .checkbox-original + .checkbox-custom{
+            background-color: lightgrey;
+
+            .check-icon{
+              position: absolute;
+              left: 5px;
+              top: 5px;
+              opacity: 0;
+            }
+
           }
-        }
-        .checkbox-original:checked + .checkbox-custom{
-          background: radial-gradient(#20FD6B, green);
-          box-shadow: 0 0 4px green;
-          .check-icon{
-            opacity: 1;
+          .checkbox-original:checked + .checkbox-custom{
+            background: radial-gradient(#20FD6B, green);
+            box-shadow: 0 0 4px green;
+
+            .check-icon{
+              opacity: 1;
+            }
+
           }
+
+          .label{
+            display: flex;
+            margin-left: 24px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+
         }
-        .label{
-          display: flex;
-          margin-left: 24px;
-          -webkit-touch-callout: none;
-          -webkit-user-select: none;
-          -khtml-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
+
+        .item:hover{
+          background-color: #e8e8e8;
+          color: #949494;
         }
+
       }
-      .item:hover{
-        background-color: #e8e8e8;
-        color: #949494;
-      }
+
     }
-  }
 
     .fade-enter-from{
       opacity: 0;
@@ -281,6 +294,5 @@ export default class SortSelectComponent extends Vue{
     .fade-leave-to{
       opacity: 0;
     }
-
 
 </style>

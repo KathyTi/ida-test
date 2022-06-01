@@ -33,15 +33,14 @@ export default class ButtonWithIcon extends Vue{
     background-color: #FF8484;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    cursor: pointer;
     transition: opacity 0.6s ease-in;
+
+    &:hover{
+      cursor: url(../../public/img/icons/cursor.svg), auto;
+    }
+
   }
-  //.fade-enter-active, .fade-leave-active {
-  //  transition: opacity .5s;
-  //}
-  //.fade-enter, .fade-leave-to {
-  //  opacity: 0;
-  //}
+
   .fade-enter-from{
     opacity: 0;
   }

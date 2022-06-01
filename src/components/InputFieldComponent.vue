@@ -31,20 +31,16 @@ export default class InputFieldComponent extends Vue{
 
   currentText = ''
 
-  input(e){
-    console.log("E",e)
-  }
+
 
   change(e){
     if(this.$props.isPrice){
-      //console.log(e.target.value)
       if(e.target.value[0] === '0'){
         e.target.value = e.target.value.slice(-(e.target.value.length-1))
       }
       this.currentText = getPriceFromString(e.target.value)
     }
     else this.currentText = e.target.value
-    console.log(this.currentText)
     this.$emit('changed', this.currentText)
   }
 
@@ -88,15 +84,19 @@ export default class InputFieldComponent extends Vue{
       box-sizing: border-box;
       color: black;
       transition: .3s ease-in;
+
       &::placeholder{
         color: #B4B4B4;
       }
+
       &:hover{
         box-shadow: inset 0 0 1px 1px rgba(200, 200, 200, 0.3), 0 2px 5px rgba(0, 0, 0, 0.1);
       }
+
       &:focus{
         box-shadow: inset 0 0 1px 1px rgba(0, 200, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.1);
       }
+
     }
 
     .input-field-multiline{
@@ -104,6 +104,7 @@ export default class InputFieldComponent extends Vue{
       width: 100%;
       height: 108px;
       min-height: unset;
+      max-height: 108px;
       flex: 0 1 auto;
       font-family: 'Source Sans Pro';
       font-style: normal;
@@ -120,15 +121,19 @@ export default class InputFieldComponent extends Vue{
       box-sizing: border-box;
       transition: .3s ease-in;
       resize: none;
+
       &::placeholder{
         color: #B4B4B4;
       }
+
       &:hover{
         box-shadow: inset 0 0 1px 1px rgba(200, 200, 200, 0.3), 0 2px 5px rgba(0, 0, 0, 0.1);
       }
+
       &:focus{
         box-shadow: inset 0 0 1px 1px rgba(0, 200, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.1);
       }
+
     }
 
   }

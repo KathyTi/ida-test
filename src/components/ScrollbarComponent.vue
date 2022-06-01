@@ -299,103 +299,86 @@ export default class ScrollbarComponent extends Vue
 
 <style scoped lang="scss">
 
-    .vc-scrollbar
-    {
+    .vc-scrollbar{
         position: absolute;
         top: 0;
         right: 0;
         width: 14px;
         height: 100%;
         overflow: hidden;
-
         pointer-events: none;
-        //background-color: lightblue;
     }
 
-    .v-scrollbar
-    {
+    .v-scrollbar{
         position: absolute;
-
-        //left: 50%;
         top: 50%;
         transform: translate(0, -50%);
         right: 2px;
-
         border-radius: 3px;
-
         width: 6px;
         height: calc(100% - 4px);
         background: #757575;
         border: 1px solid #FFFFFF;
-
         transition: width 120ms;
     }
 
-    .v-scrollbar-box
-    {
+    .v-scrollbar-box{
         position: absolute;
-
         right: 0;
-
         box-sizing: border-box;
-
         width: 14px;
         transition: opacity 320ms, padding 320ms, width 320ms, height 320ms;
         opacity: 0;
-
         pointer-events: auto;
-
         will-change: transform, opacity, height;
         transform: translateY(0);
 
-        &.v-scrollbar-display
-        {
+        &.v-scrollbar-display{
             opacity: 0.4;
         }
 
-        &:hover
-        {
+        &:hover{
             opacity: 0.6;
 
-            .v-scrollbar
-            {
+            .v-scrollbar{
                 width: 10px;
             }
+
         }
 
-        &:active
-        {
+        &:active{
             opacity: 0.8;
             transition: none;
         }
 
-        &.v-scrollbar-interact
-        {
+        &.v-scrollbar-interact{
             opacity: 0.8;
 
-            .v-scrollbar
-            {
+            .v-scrollbar{
                 width: 10px;
             }
+
         }
 
-        &.v-hide
-        {
+        &.v-hide{
             opacity: 0;
             transition-duration: 180ms;
             pointer-events: none;
         }
+
     }
 </style>
 
 <style lang="scss">
-    .vc-scrollbar-disable-default
-    {
-        -ms-overflow-style: none; /* Internet Explorer 10+ */
-        scrollbar-width: none; /* Firefox */
+
+    .vc-scrollbar-disable-default{
+        -ms-overflow-style: none;
+        scrollbar-width: none;
 
         &::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
+            display: none;
         }
+
     }
+
 </style>

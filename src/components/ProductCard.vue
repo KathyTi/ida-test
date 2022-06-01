@@ -26,7 +26,7 @@
 
 <script>
 import { Options, Vue } from 'vue-class-component';
-import {getPriceFromString} from "../lib/Utils";
+import {getPriceFromString} from "@/lib/Utils";
 import ButtonWithIcon from './ButtonWithIcon';
 
 @Options({
@@ -65,18 +65,17 @@ export default class ProductCard extends Vue{
     .product-card{
         display: flex;
         position: relative;
-        width: 100%;//332px;
+        width: 100%;
         height: 423px;
         background-color: #FFFEFB;
         box-shadow: 0 20px 30px rgba(0, 0, 0, 0.04), 0 6px 10px rgba(0, 0, 0, 0.02);
         border-radius: 4px;
         flex-direction: column;
         align-items: flex-start;
-        //overflow: hidden;
 
         .card-img{
             display: flex;
-            width: 100%;//332px;
+            width: 100%;
             min-height: 200px;
             left: 380px;
             top: 83px;
@@ -106,7 +105,7 @@ export default class ProductCard extends Vue{
 
             .card-desc{
                 display: inline-block;
-                width: 100%;//300px;
+                width: 100%;
                 height: 100%;
                 font-family: 'Source Sans Pro';
                 font-style: normal;
@@ -122,7 +121,7 @@ export default class ProductCard extends Vue{
 
             .card-price{
                 display: flex;
-                width: 100%;//117px;
+                width: 100%;
                 height: 30px;
                 font-family: 'Source Sans Pro';
                 font-style: normal;
@@ -131,25 +130,12 @@ export default class ProductCard extends Vue{
                 line-height: 30px;
                 color: #3F3F3F;
             }
+
         }
-        //.fade-enter{
-        //    opacity: 0;
-        //}
-        //.fade-enter-active{
-        //    transition: revert opacity 1s;
-        //}
-        //.fade-enter-to{
-        //    opacity: 1;
-        //}
-        //.fade-leave{
-        //    opacity: 1;
-        //}
-        //.fade-leave-active{
-        //    transition: opacity 1s;
-        //}
-        //.fade-leave-to{
-        //    opacity: 0;
-        //}
+
+        &:hover{
+            cursor: url(../../public/img/icons/cursor.svg), auto;
+        }
 
     }
 

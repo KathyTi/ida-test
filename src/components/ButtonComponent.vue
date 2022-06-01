@@ -73,17 +73,18 @@ export default class ButtonComponent extends Vue{
     padding-inline: 10px 16px;
     box-sizing: border-box;
     cursor: pointer;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     transition: all .4s linear;
+
     &:hover{
       background: var(--hover-bg-color);
     }
-  }
 
+  }
 
 </style>

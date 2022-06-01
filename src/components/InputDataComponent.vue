@@ -38,7 +38,6 @@ import InputFieldComponent from './InputFieldComponent';
 export default class InputDataComponent extends Vue{
 
     changed(text){
-        console.log("ch", text)
         this.$emit('changed', text, this.$props.index)
     }
 
@@ -57,6 +56,7 @@ export default class InputDataComponent extends Vue{
       justify-content: flex-start;
       align-items: flex-start;
       position: relative;
+
       .title{
           display: flex;
           width: 100%;
@@ -69,6 +69,7 @@ export default class InputDataComponent extends Vue{
           letter-spacing: -0.02em;
           color: #49485E;
       }
+
       .requiring-marker{
           display: flex;
           height: 4px;

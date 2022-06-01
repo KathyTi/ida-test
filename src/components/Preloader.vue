@@ -73,6 +73,7 @@ export default class Preloader extends Vue{
             .loading span:nth-child(3){
                 animation-delay: .6666666s;
             }
+
             @keyframes dots {
                 50%{
                     opacity: .2;

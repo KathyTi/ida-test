@@ -98,9 +98,9 @@ export default class AddNewProductComponent extends Vue{
 <style scoped lang="scss">
 
   .add-new-product-component{
+    position: fixed;
     display: flex;
     width: 332px;
-    height: 440px;
     background: #FFFEFB;
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.04), 0 6px 10px rgba(0, 0, 0, 0.02);
     border-radius: 4px;
@@ -110,9 +110,11 @@ export default class AddNewProductComponent extends Vue{
     justify-content: space-between;
   }
   @media (max-width: 768px){
+
     .add-new-product-component{
       width: 100%;
     }
+
   }
 
 </style>
