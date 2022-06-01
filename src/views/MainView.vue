@@ -1,32 +1,37 @@
 <template>
-  <div class="main-view">
-    <div class="adding-product-area">
-      <div class="header">
-        Добавление товара
-      </div>
-      <AddNewProductComponent @clicked="addNewCard"></AddNewProductComponent>
-    </div>
-    <div class="products-area">
-      <div class="header">
-        <SortSelectComponent :itemsList="sortTypes"
-                             :itemsStates="sortStates"
-                             @changeSort="changeSortType"></SortSelectComponent>
-      </div>
-      <div class="products-catalog-wrapper">
-        <div class="products-catalog" ref="scroll_wrapper_ref">
-          <transition-group name="list">
-            <ProductCard v-for="card in products"
-                         :ref="`card_ref_${card.id}`"
-                         :key="card.id"
-                         :card="card"
-                         @removeClicked="removeCard"
-            ></ProductCard>
-          </transition-group>
+  <div class="wrapper">
+    <div class="main-view" ref="scroll_wrapper_ref">
+      <div class="content-wrapper">
+        <MainHeader>
+          <template v-slot:title>
+            Добавление товара
+          </template>
+          <template v-slot:button>
+            <SortSelectComponent :itemsList="sortTypes"
+                                 :itemsStates="sortStates"
+                                 @changeSort="changeSortType"></SortSelectComponent>
+          </template>
+        </MainHeader>
+        <div class="main-area-wrapper">
+          <div class="adding-product-area">
+            <AddNewProductComponent @clicked="addNewCard"></AddNewProductComponent>
+          </div>
+          <div class="products-catalog-wrapper">
+            <div class="products-catalog">
+              <transition-group name="list">
+                <ProductCard v-for="card in products"
+                             :ref="`card_ref_${card.id}`"
+                             :key="card.id"
+                             :card="card"
+                             @removeClicked="removeCard"
+                ></ProductCard>
+              </transition-group>
+            </div>
+          </div>
         </div>
-        <ScrollbarComponent v-if="scroll_wrapper_ref" :scroll-element="scroll_wrapper_ref"></ScrollbarComponent>
       </div>
-
     </div>
+    <ScrollbarComponent v-if="scroll_wrapper_ref" :scroll-element="scroll_wrapper_ref"></ScrollbarComponent>
   </div>
 </template>
 
@@ -36,12 +41,12 @@ import AddNewProductComponent from '../components/AddNewProductComponent';
 import ProductCard from '../components/ProductCard';
 import ScrollbarComponent from '../components/ScrollbarComponent';
 import SortSelectComponent from '../components/SortSelectComponent';
-import api from '../lib/IndexedDB';
+import MainHeader from '../components/MainHeader';
 import DBController from "../lib/IndexedDB";
 
 
 @Options({
-  components: {AddNewProductComponent, ProductCard, ScrollbarComponent, SortSelectComponent},
+  components: {MainHeader, AddNewProductComponent, ProductCard, ScrollbarComponent, SortSelectComponent},
   props: {},
   emits: [],
   watch: {},
@@ -57,16 +62,45 @@ export default class MainView extends Vue{
 
   products = null
 
+  addresses = ["https://ipac67.ru/image/cache/data/product/iPhone/iPhone-13-pro/green13pro-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/product/xiaomi/fd172cd0c6e5797cd3662bc88f8a8699-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/product/homepod/homebl-700x700.png",
+    "https://ipac67.ru/image/cache/data/product/Charge/zashhitnoe-steklo-apple-ipad-air-2019-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/product/ipad/pencil21-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/product/xiaomi/70mai_dash_cam_a400_seriy4-800x800-1-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/product/xiaomi/EDA001113501A-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/li/aks/17340663-700x700.jpeg",
+    "https://ipac67.ru/image/cache/data/product/iPhone/airtag/1111-700x700.jpg",
+    "https://ipac67.ru/image/cache/data/product/ipad/aks/%20Smart%20Keyboard_1-700x700.jpeg",
+    "https://ipac67.ru/image/cache/data/li/default/%20Xiaomi%20-700x700.png"]
+
   async mounted(){
     this.products = await this.db.getAll()
+
+    // Просто костыль чтобы не набивать лист вручную.
+    // Работает при пустом списке на загрузке.
+    // Обновление страницы после удаления всех элементов снова сгенерирует этот лист.
+    if(this.products.length === 0){
+      for(let i = 0; i < this.addresses.length; i++){
+        console.log('i', new Date().getTime())
+        let newCard = {
+          desc: "Описание товара по умолчанию должно содержать не менее пяти слов",
+          id: i,
+          img: this.addresses[i],
+          name: `Имя товара ${1 + Math.floor(1 + Math.random() * 100)}`,
+          price: Math.floor(10 + Math.random() * 200000).toString(),
+        }
+        await this.addNewCard(newCard)
+      }
+      this.products = await this.db.getAll()
+      this.sort()
+    }
   }
 
   async addNewCard(card){
     const newCard = card
     newCard.id = new Date().getTime()
-    //this.products.push(newCard)
     await this.db.addItem(newCard)
-    //this.products = null
     this.products = await this.db.getAll()
     this.sort()
   }
@@ -104,125 +138,114 @@ export default class MainView extends Vue{
 
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
-  .main-view{
-    display: flex;
+  .wrapper{
     height: 100%;
     width: 100%;
-    padding: 32px 32px 0 32px;
-    box-sizing: border-box;
-    background-color: #FAF9F7;
-    flex-direction: row;
+    overflow: hidden;
+    position: relative;
 
-    .adding-product-area{
-      display: flex;
-      width: 332px;
+    .main-view{
       height: 100%;
+      width: 100%;
+      padding: 0 32px 0 32px;
+      box-sizing: border-box;
+      background-color: #FAF9F7;
       flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      margin-right: 16px;
+      display: block;
+      position: static;
+      flex: 1;
+      overflow-y: auto;
 
-      .header{
+      .content-wrapper{
         display: flex;
         width: 100%;
-        height: 51px;
-        justify-content: flex-start;
-        font-family: 'Source Sans Pro';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 28px;
-        line-height: 35px;
-        color: #3F3F3F;
-        padding-right: 8px;
+        height: 100%;
+        flex-direction: column;
+        padding-top: 32px;
         box-sizing: border-box;
+
+        .main-area-wrapper{
+          display: flex;
+          width: 100%;
+          height: 100%;
+
+          .adding-product-area{
+            display: flex;
+            min-width: 332px;
+            height: 100%;
+            justify-content: flex-start;
+            align-items: flex-start;
+          }
+          @media (max-width: 768px){
+
+            .adding-product-area{
+              width: 100%;
+            }
+
+          }
+
+          .products-catalog-wrapper{
+            height: 100%;
+            width: 100%;
+            overflow-y: visible;
+
+            .products-catalog{
+              display: grid;
+              height: 100%;
+              width: 100%;
+              padding-left: 16px;
+              padding-right: 8px;
+              box-sizing: border-box;
+              grid-template-columns: repeat(4, 1fr);
+              column-gap: 16px;
+              row-gap: 16px;
+            }
+            @media (max-width: 1600px){
+
+              .products-catalog{
+                grid-template-columns: repeat(3, 1fr);
+              }
+
+            }
+            @media (max-width: 1300px){
+
+              .products-catalog{
+                grid-template-columns: repeat(2, 1fr);
+              }
+
+            }
+            @media (max-width: 992px){
+
+              .products-catalog{
+                grid-template-columns: repeat(1, 1fr);
+              }
+
+            }
+          }
+
+        }
+
       }
 
     }
     @media (max-width: 768px){
-      .adding-product-area{
-        width: 100%;
-      }
-    }
 
-    .products-area{
-      display: flex;
-      width: 100%;
-      height: 100%;
-      //background-color: lightseagreen;
-      flex-direction: column;
+      .main-view{
+        flex-direction: column;
 
-      .header{
-        display: flex;
-        width: 100%;
-        min-height: 51px;
-        justify-content: flex-end;
+        .adding-product-area{
+          margin-bottom: 24px;
+        }
+
       }
 
-      .products-catalog-wrapper{
-        //display: block;
-        //position: static;
-        //overflow-y: auto;
-        //overflow-x: hidden;
-        overflow: hidden;
-        position: relative;
-        height: 100%;
-        width: 100%;
-        display: block;
-        .products-catalog{
-          padding-top: 8px;
-          padding-right: 8px;
-          box-sizing: border-box;
-          //position: relative;
-          position: static;
-          flex: 1;
-          overflow-y: auto;
-          //overflow-y: scroll;
-          //display: block;
-          //overflow-y: auto;
-          overflow-x: hidden;
-          //position: fixed;
-          display: grid;
-          height: 100%;
-          width: 100%;
-          left: 0;
-          top: 0;
-          //background-color: green;
-          grid-template-columns: repeat(4, 1fr);
-          column-gap: 16px;
-          row-gap: 16px;
-          //transition: all .8s ease;
-
-        }
-        @media (max-width: 1500px){
-          .products-catalog{
-            grid-template-columns: repeat(3, 1fr);
-          }
-        }
-        @media (max-width: 1200px){
-          .products-catalog{
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-        @media (max-width: 992px){
-          .products-catalog{
-            grid-template-columns: repeat(1, 1fr);
-          }
-        }
-      }
-
-    }
-
-  }
-  @media (max-width: 768px){
-    .main-view{
-      flex-direction: column;
-      .adding-product-area{
-        margin-bottom: 24px;
-      }
     }
   }
 
-  .list-move,
+
+  .list-move{
+    transition: transform 0.8s ease;
+  }
   .list-enter-active,
   .list-leave-active{
     transition: all .5s ease;
@@ -232,9 +255,6 @@ export default class MainView extends Vue{
   .list-leave-to{
     opacity: 0;
     transform: translateY(50px);
-  }
-  .list-leave-active{
-    position: absolute;
   }
 
 </style>
